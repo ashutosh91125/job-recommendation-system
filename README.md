@@ -37,10 +37,61 @@ The system consists of the following microservices:
    ```bash
    mvn clean install
    ```
-3. Start the services using Docker Compose:
+
+### Starting with Docker Compose
+
+1. Make sure Docker Desktop is running on your machine
+
+2. Build and start all services:
    ```bash
-   docker-compose up --build
+   docker-compose up --build -d
    ```
+   This will:
+   - Build all service images
+   - Start Zookeeper and Kafka
+   - Start MySQL and MongoDB
+   - Start all microservices in the correct order
+
+3. Verify services are running:
+   ```bash
+   docker-compose ps
+   ```
+
+4. Check service logs:
+   ```bash
+   # View all logs
+   docker-compose logs
+
+   # View logs for a specific service
+   docker-compose logs user-service
+   docker-compose logs job-posting-service
+   docker-compose logs recommendation-service
+   ```
+
+5. Stop all services:
+   ```bash
+   docker-compose down
+   ```
+
+### Service Dependencies
+
+The services will start in the following order:
+1. Zookeeper
+2. Kafka
+3. MySQL & MongoDB
+4. Eureka Server
+5. User Service
+6. Job Posting Service
+7. Recommendation Service
+8. API Gateway
+
+### Troubleshooting
+
+If any service fails to start:
+1. Check the logs: `docker-compose logs [service-name]`
+2. Ensure all ports are available (8080, 8081, 8082, 8083, 29092, 2181, 3307, 27017)
+3. Verify Docker has enough resources allocated
+4. Try rebuilding: `docker-compose up --build --force-recreate`
 
 ## Service URLs
 
